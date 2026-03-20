@@ -2,7 +2,7 @@
 
 An AI-powered email assistant that reads your real Gmail inbox, summarizes and prioritizes each email, and drafts a reply — all from the terminal.
 
-Built with Python, Claude (Anthropic), Gmail API, and SQLite.
+Built with Python, OpenAI GPT-4o, Gmail API, and SQLite.
 
 ---
 
@@ -10,7 +10,7 @@ Built with Python, Claude (Anthropic), Gmail API, and SQLite.
 
 - Connects to your real Gmail inbox via the Gmail API (OAuth 2.0)
 - Fetches only unread emails — never re-processes what it has already seen
-- Uses Claude to summarize each email, categorize it, and assign a priority (high / medium / low)
+- Uses GPT-4o to summarize each email, categorize it, and assign a priority (high / medium / low)
 - Drafts a professional reply suggestion for every email
 - Saves everything to a local SQLite database
 - Prints a clean, colour-coded terminal report sorted by priority
@@ -24,9 +24,9 @@ Built with Python, Claude (Anthropic), Gmail API, and SQLite.
    ```
    py -3.12 -m pip install -r requirements.txt
    ```
-3. Copy `.env.example` to `.env` and add your Anthropic API key
+3. Copy `.env.example` to `.env` and add your OpenAI API key
    ```
-   ANTHROPIC_API_KEY=your-key-here
+   OPENAI_API_KEY=your-key-here
    ```
 4. Set up Gmail API credentials
    - Go to [Google Cloud Console](https://console.cloud.google.com)
@@ -64,7 +64,7 @@ email-assistant/
 ## Tech stack
 
 - Python 3.12
-- Anthropic Claude API (claude-opus-4-6)
+- OpenAI GPT-4o API
 - Gmail API (google-auth, google-auth-oauthlib, google-api-python-client)
 - SQLite (built into Python)
 - python-dotenv

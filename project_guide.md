@@ -29,11 +29,12 @@ Still using:
 | Tool | What It Is | Why It Was Chosen |
 |---|---|---|
 | Python 3.12 | Programming language | Readable, beginner-friendly, great AI ecosystem |
-| `anthropic` library | SDK to talk to Claude | Official Anthropic SDK, simple API |
+| `openai` library | SDK to talk to GPT-4o | Official OpenAI SDK, simple API |
 | `google-auth` + `google-api-python-client` | Gmail API access | Official Google libraries, handles OAuth tokens automatically |
 | `python-dotenv` | Reads `.env` files | Keeps API keys out of code safely |
 | `sqlite3` | Database | Built into Python, zero setup needed |
 | Gmail API | Real email source | Reads live unread emails with read-only OAuth scope |
+| Telegram Bot API | Approval notifications | Free, instant, no extra library needed |
 
 ---
 
@@ -55,8 +56,8 @@ email-assistant/
     ├── __init__.py             Makes the folder importable as a Python package
     ├── gmail_auth.py           Handles Gmail OAuth login and token management
     ├── reader.py               Loads emails from Gmail inbox (or JSON for testing)
-    ├── analyzer.py             Sends emails to Claude for classification
-    ├── replier.py              Sends emails to Claude for draft replies
+    ├── analyzer.py             Sends emails to GPT-4o for classification
+    ├── replier.py              Sends emails to GPT-4o for draft replies
     └── storage.py              Saves and retrieves results from SQLite
 ```
 
@@ -73,9 +74,9 @@ Gmail inbox (unread emails only)
       ↓
   reader.py      →  fetches emails from Gmail API
       ↓
-  analyzer.py    →  asks Claude: what type is this? how urgent?
+  analyzer.py    →  asks GPT-4o: what type is this? how urgent?
       ↓
-  replier.py     →  asks Claude: write a draft reply
+  replier.py     →  asks GPT-4o: write a draft reply
       ↓
   storage.py     →  saves everything to emails.db
       ↓
@@ -90,8 +91,8 @@ Gmail inbox (unread emails only)
 
 ### `.env`
 - **Category:** Config
-- **Role:** Stores your Anthropic API key privately on your computer
-- **Remove it:** Everything crashes — no API key means every Anthropic call is rejected
+- **Role:** Stores your OpenAI API key privately on your computer
+- **Remove it:** Everything crashes — no API key means every OpenAI call is rejected
 - **Connects to:** `main.py` loads it via `load_dotenv()`, then `analyzer.py` and `replier.py` use the key automatically
 
 ---
@@ -162,17 +163,17 @@ Gmail inbox (unread emails only)
 
 ### `assistant/analyzer.py`
 - **Category:** Integration
-- **Role:** Sends each email to Claude and gets back a summary, type, and priority in JSON format
+- **Role:** Sends each email to GPT-4o and gets back a summary, type, and priority in JSON format
 - **Remove it:** `main.py` crashes on import, no classification happens
-- **Connects to:** Receives emails from `main.py`, calls Anthropic API over the internet, returns analysis to `main.py`
+- **Connects to:** Receives emails from `main.py`, calls OpenAI API over the internet, returns analysis to `main.py`
 
 ---
 
 ### `assistant/replier.py`
 - **Category:** Integration
-- **Role:** Sends each email plus its analysis to Claude and gets back a draft reply
+- **Role:** Sends each email plus its analysis to GPT-4o and gets back a draft reply
 - **Remove it:** `main.py` crashes on import, no draft replies are generated
-- **Connects to:** Receives email and analysis from `main.py`, calls Anthropic API over the internet, returns draft text to `main.py`
+- **Connects to:** Receives email and analysis from `main.py`, calls OpenAI API over the internet, returns draft text to `main.py`
 
 ---
 
@@ -195,7 +196,7 @@ from dotenv import load_dotenv
 load_dotenv()
 ```
 
-Reads `.env` and loads the API key into memory. Must run before any Anthropic call.
+Reads `.env` and loads the API key into memory. Must run before any OpenAI call.
 Remove it and every API call fails with an authentication error.
 
 ---
@@ -347,10 +348,10 @@ This is necessary because you cannot sort "high", "medium", "low" alphabetically
 An API is a way for two programs to talk to each other over the internet. You send a request, you get a response back. Think of it like ordering food — you tell the kitchen what you want, the kitchen makes it, and sends it back to you. You never see the kitchen.
 
 **Why it matters here:**
-Your code has no AI inside it. All the intelligence comes from Anthropic's servers. Your code sends the email text to Anthropic over the internet and receives the summary back. Without the API your project is just a file reader.
+Your code has no AI inside it. All the intelligence comes from OpenAI's servers. Your code sends the email text to OpenAI over the internet and receives the summary back. Without the API your project is just a file reader.
 
 **Where it appears:**
-`analyzer.py` and `replier.py` — every `client.chat.completions.create(...)` call is an API request going out over the internet to Anthropic.
+`analyzer.py` and `replier.py` — every `client.chat.completions.create(...)` call is an API request going out over the internet to OpenAI.
 
 ---
 
@@ -358,13 +359,13 @@ Your code has no AI inside it. All the intelligence comes from Anthropic's serve
 **Level:** Beginner
 
 **Simple explanation:**
-Authentication means proving who you are. An API key is like a password that proves you have an Anthropic account. Every request you send includes this key. If the key is missing or wrong, Anthropic rejects the request immediately.
+Authentication means proving who you are. An API key is like a password that proves you have an OpenAI account. Every request you send includes this key. If the key is missing or wrong, OpenAI rejects the request immediately.
 
 **Why it matters here:**
-Without authentication nothing works. The API key is also how Anthropic knows which account to charge for usage.
+Without authentication nothing works. The API key is also how OpenAI knows which account to charge for usage.
 
 **Where it appears:**
-`.env` stores the key. `load_dotenv()` in `main.py` loads it. The `anthropic` library picks it up automatically from there and attaches it to every request.
+`.env` stores the key. `load_dotenv()` in `main.py` loads it. The `openai` library picks it up automatically from there and attaches it to every request.
 
 **Golden rule:** Never put your API key directly in your code. Always use `.env`.
 
@@ -388,7 +389,7 @@ If you wrote your API key directly in `analyzer.py` and shared the code with som
 **Level:** Beginner
 
 **Simple explanation:**
-JSON is a universal format for storing and sending structured data as text. It looks like a Python dictionary. It is how data travels between your code and Anthropic's servers — you send text, Anthropic sends back JSON.
+JSON is a universal format for storing and sending structured data as text. It looks like a Python dictionary. It is how data travels between your code and OpenAI's servers — you send text, OpenAI sends back JSON.
 
 **Why it matters here:**
 Your emails are stored as JSON. When GPT responds with a classification, it returns JSON. Your code then parses that JSON into a Python dictionary so you can actually use the values.
@@ -612,7 +613,7 @@ email_text = (
 ### APIs
 **File:** `analyzer.py` line 40, `replier.py` line 38
 **Function:** `analyze_email()`, `draft_reply()`
-**What it's doing here:** Sending a POST request to Anthropic's servers with your email text and receiving a response back
+**What it's doing here:** Sending a POST request to OpenAI's servers with your email text and receiving a response back
 **Pay attention to:**
 ```python
 response = client.chat.completions.create(
@@ -627,8 +628,8 @@ This one line is the entire API call. Everything before it is preparation. Every
 ### Authentication
 **File:** `.env`, `main.py` lines 1-2
 **Function:** `load_dotenv()`
-**What it's doing here:** Reading `OPENAI_API_KEY` from `.env` into memory so the `anthropic` library can find it automatically without you passing it anywhere manually
-**Pay attention to:** The order — `load_dotenv()` must run before anything else. If it runs after the Anthropic client is created, the key is never loaded.
+**What it's doing here:** Reading `OPENAI_API_KEY` from `.env` into memory so the `openai` library can find it automatically without you passing it anywhere manually
+**Pay attention to:** The order — `load_dotenv()` must run before anything else. If it runs after the OpenAI client is created, the key is never loaded.
 
 ---
 
@@ -762,7 +763,7 @@ CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 ELSE 3 END
 ### Separation of Concerns
 **Appears across:** The entire folder structure
 **What it's doing here:** Every file has exactly one job. `reader.py` only reads. `analyzer.py` only analyzes. `replier.py` only drafts. `storage.py` only stores. `main.py` only orchestrates.
-**Pay attention to:** `main.py` never touches the database directly. `storage.py` never calls Anthropic. `analyzer.py` never reads files. Each file is completely unaware of what the others do internally — they just pass data back and forth through function calls.
+**Pay attention to:** `main.py` never touches the database directly. `storage.py` never calls OpenAI. `analyzer.py` never reads files. Each file is completely unaware of what the others do internally — they just pass data back and forth through function calls.
 
 ---
 
@@ -783,7 +784,7 @@ from dotenv import load_dotenv
 load_dotenv()
 ```
 
-Python opens `.env`, reads `OPENAI_API_KEY=sk-...` and loads it silently into memory. From this point forward every Anthropic call will automatically find the key. No key = everything that follows fails.
+Python opens `.env`, reads `OPENAI_API_KEY=sk-...` and loads it silently into memory. From this point forward every OpenAI call will automatically find the key. No key = everything that follows fails.
 
 ---
 
@@ -876,7 +877,7 @@ messages = [
 response = client.chat.completions.create(model="gpt-4o", messages=messages)
 ```
 
-Your computer sends an HTTPS request to `api.anthropic.com`. The email text travels over the internet. Claude reads both messages.
+Your computer sends an HTTPS request to `api.openai.com`. The email text travels over the internet. GPT-4o reads both messages.
 
 **Step 4d — Response arrives back**
 
@@ -926,7 +927,7 @@ The analysis from Stage 4 feeds directly into Stage 5. GPT knows the context bef
 
 **Step 5b — Second request leaves your computer**
 
-Same process as Stage 4 — built with a different system prompt, sent to Anthropic, GPT generates a reply draft.
+Same process as Stage 4 — built with a different system prompt, sent to OpenAI, GPT generates a reply draft.
 
 **Step 5c — Response arrives as plain text**
 
@@ -1030,7 +1031,7 @@ This is the only thing the user ever sees. Everything before this was invisible 
    │  fields extracted → formatted as plain text        │
    │    │                                               │
    │    ▼                                               │
-   │  system prompt + email text → sent to Anthropic       │
+   │  system prompt + email text → sent to OpenAI       │
    │                    │                               │
    │                    ▼                               │
    │            GPT reads, returns JSON string          │
@@ -1040,7 +1041,7 @@ This is the only thing the user ever sees. Everything before this was invisible 
    │            {summary, type, priority}               │
    │                    │                               │
    │    ▼               ▼                               │
-   │  email + analysis → sent to Anthropic                 │
+   │  email + analysis → sent to OpenAI                 │
    │                    │                               │
    │                    ▼                               │
    │            GPT reads, returns plain text draft     │
@@ -1107,7 +1108,7 @@ load_dotenv()
 
 **What it owns:** The API key
 
-**What breaks without it:** Every module that touches Anthropic fails immediately
+**What breaks without it:** Every module that touches OpenAI fails immediately
 
 **Talks to:** Indirectly feeds into Summarizer, Classifier, and Reply Generator — they all use the key it loaded
 
@@ -1159,7 +1160,7 @@ def load_emails(path):
 **Responsibility:**
 - Take one raw email
 - Format it into clean text for GPT
-- Send it to Anthropic with instructions to return JSON
+- Send it to OpenAI with instructions to return JSON
 - Parse the response
 - Return a structured analysis
 
@@ -1192,7 +1193,7 @@ def analyze_email(email: dict) -> dict:
 
 **What breaks without it:** No summaries. No type labels. No priority sorting. The report is useless.
 
-**Talks to:** Receives email from Orchestrator → sends HTTP request to Anthropic → returns analysis dict to Orchestrator
+**Talks to:** Receives email from Orchestrator → sends HTTP request to OpenAI → returns analysis dict to Orchestrator
 
 ---
 
@@ -1204,7 +1205,7 @@ def analyze_email(email: dict) -> dict:
 
 **Responsibility:**
 - Take the original email AND its analysis
-- Send both to Anthropic with instructions to write a reply
+- Send both to OpenAI with instructions to write a reply
 - Return the draft text
 
 **Why it needs the analysis too:** The analysis tells GPT the tone and urgency before it starts writing. A high priority work email gets a formal reply. A personal email from mum gets a warm casual reply. Without the analysis GPT writes generic replies.
@@ -1226,7 +1227,7 @@ def draft_reply(email: dict, analysis: dict) -> str:
 
 **What breaks without it:** No draft replies generated.
 
-**Talks to:** Receives email + analysis from Orchestrator → sends HTTP request to Anthropic → returns draft string to Orchestrator
+**Talks to:** Receives email + analysis from Orchestrator → sends HTTP request to OpenAI → returns draft string to Orchestrator
 
 ---
 
@@ -1369,8 +1370,8 @@ They are completely independent. They only know about the data they receive and 
 |---|---|---|---|---|
 | Config Loader | `main.py` | nothing | nothing (sets memory) | `.env` file |
 | Email Parser | `reader.py` | file path | list of email dicts | `sample_emails.json` |
-| Summarizer + Classifier | `analyzer.py` | one email dict | analysis dict | Anthropic API |
-| Reply Generator | `replier.py` | email + analysis | draft string | Anthropic API |
+| Summarizer + Classifier | `analyzer.py` | one email dict | analysis dict | OpenAI API |
+| Reply Generator | `replier.py` | email + analysis | draft string | OpenAI API |
 | Storage | `storage.py` | email + analysis + draft | sorted list | `emails.db` |
 | UI / Reporter | `main.py` | sorted list | nothing | terminal |
 | Orchestrator | `main.py` | nothing | nothing | coordinates all |
