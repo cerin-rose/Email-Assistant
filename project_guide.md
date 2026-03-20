@@ -503,7 +503,7 @@ GPT is a text generator. It does not natively return Python objects — it retur
 This is a design principle that says each file or function should do exactly one job. Reading emails is one job. Classifying them is another. Saving them is another. They should not be mixed together.
 
 **Why it matters here:**
-Because of this principle you can swap out any single piece without breaking the rest. Want to use Gmail instead of a JSON file? Change only `reader.py`. Want to use Claude instead of GPT? Change only `analyzer.py` and `replier.py`. Nothing else changes.
+Because of this principle you can swap out any single piece without breaking the rest. Want to use Gmail instead of a JSON file? Change only `reader.py`. Want to swap the AI model? Change only `analyzer.py` and `replier.py`. Nothing else changes.
 
 **Where it appears:**
 The entire folder structure. Each file has one job. `reader.py` only reads. `analyzer.py` only analyzes. `storage.py` only stores.
@@ -570,7 +570,7 @@ email_text = (
 
 **What it is:** Each file or function should do exactly one job. Don't mix reading, processing, and saving in the same place.
 
-**Why it matters here:** Because of this you can swap any single piece without breaking the rest. Want Gmail instead of JSON? Change only `reader.py`. Want Claude instead of GPT? Change only `analyzer.py` and `replier.py`. Nothing else needs to touch.
+**Why it matters here:** Because of this you can swap any single piece without breaking the rest. Want Gmail instead of JSON? Change only `reader.py`. Want to swap the AI model? Change only `analyzer.py` and `replier.py`. Nothing else needs to touch.
 
 **Where it appears:** The entire folder structure. One file per job.
 
