@@ -1,0 +1,58 @@
+[
+  {
+    "id": "001",
+    "from": "sarah.chen@company.com",
+    "to": "you@example.com",
+    "subject": "Q3 Budget Review - Action Required by Friday",
+    "date": "2026-03-19T09:15:00",
+    "body": "Hi,\n\nI need you to review the attached Q3 budget spreadsheet and send me your department's numbers by end of day Friday. The CFO is presenting to the board on Monday and we cannot be late.\n\nSpecifically, I need:\n1. Headcount costs for Q3\n2. Software licensing renewals\n3. Any planned capital expenditures\n\nIf you have questions, ping me on Slack.\n\nThanks,\nSarah"
+  },
+  {
+    "id": "002",
+    "from": "newsletter@techdigest.io",
+    "to": "you@example.com",
+    "subject": "This Week in AI: GPT-5, open source models, and more",
+    "date": "2026-03-19T07:00:00",
+    "body": "Good morning!\n\nHere's your weekly roundup of what's happening in tech:\n\n• OpenAI announced GPT-5 with improved reasoning\n• Meta released a new open-source LLM under MIT license\n• Google DeepMind published research on AI safety alignment\n• Mistral raised $600M in Series B funding\n\nRead the full stories at techdigest.io.\n\nUnsubscribe | Manage preferences"
+  },
+  {
+    "id": "003",
+    "from": "mom@gmail.com",
+    "to": "you@example.com",
+    "subject": "Sunday dinner this week?",
+    "date": "2026-03-18T19:42:00",
+    "body": "Hi sweetheart,\n\nYour dad and I were wondering if you're free for dinner on Sunday? I'm making your favorite pasta. Your sister will be here too with the kids.\n\nLet us know! We haven't seen you in a while and miss you.\n\nLove,\nMom\n\nP.S. Can you bring that pie dish you borrowed last month? :)"
+  },
+  {
+    "id": "004",
+    "from": "support@cloudservice.com",
+    "to": "you@example.com",
+    "subject": "Your invoice #INV-2026-0312 is ready",
+    "date": "2026-03-18T10:00:00",
+    "body": "Hello,\n\nYour invoice for March 2026 is now available.\n\nAmount: $149.00\nDue date: April 1, 2026\nService: CloudService Pro Plan\n\nYou can view and download your invoice at: account.cloudservice.com/invoices\n\nIf you have billing questions, contact billing@cloudservice.com.\n\nThank you for your business."
+  },
+  {
+    "id": "005",
+    "from": "alex.rodriguez@partner.org",
+    "to": "you@example.com",
+    "subject": "Partnership proposal - collaboration opportunity",
+    "date": "2026-03-17T14:30:00",
+    "body": "Hello,\n\nMy name is Alex Rodriguez and I'm the Head of Partnerships at Partner.org. We've been following your work and believe there's a strong alignment between our organizations.\n\nI'd love to schedule a 30-minute call to explore a potential collaboration. We're thinking of a co-marketing initiative that could benefit both our audiences.\n\nAre you available for a call next week? I'm flexible on timing.\n\nBest regards,\nAlex Rodriguez\nHead of Partnerships, Partner.org"
+  },
+  {
+    "id": "006",
+    "from": "alerts@bankingsecure.com",
+    "to": "you@example.com",
+    "subject": "URGENT: Unusual login attempt detected on your account",
+    "date": "2026-03-19T11:05:00",
+    "body": "Security Alert\n\nWe detected a login attempt to your account from an unrecognized device.\n\nLocation: Lagos, Nigeria\nDevice: Windows PC\nTime: 2026-03-19 11:02 UTC\n\nIf this was you, you can ignore this message. If this was NOT you, please secure your account immediately by visiting: account.bankingsecure.com/security\n\nDo not share your password with anyone, including bank employees.\n\nBanking Secure Team"
+  },
+  {
+    "id": "007",
+    "from": "boss@company.com",
+    "to": "yet@example.com",
+    "subject": "Team meeting tomorrow 9am",
+    "date": "2026-03-20T08:00:00",
+    "body": "Hi, reminder that we have the weekly team standup tomorrow at 9am. Please come prepared with your updates. Thanks."
+  }
+]
