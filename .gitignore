@@ -3,3 +3,4 @@ emails.db
 __pycache__/
 *.pyc
 .local-config/
+.claude/
