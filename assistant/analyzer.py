@@ -1,5 +1,5 @@
 """
-analyzer.py — Summarizes and classifies emails using Claude.
+analyzer.py — Summarizes and classifies emails using GPT-4o.
 
 For each email it produces:
   - summary:  1-2 sentence plain-English summary
@@ -30,7 +30,7 @@ Return ONLY valid JSON. No extra text."""
 
 
 def analyze_email(email: dict) -> dict:
-    """Send one email to Claude and get back summary + classification."""
+    """Send one email to GPT-4o and get back summary + classification."""
     email_text = (
         f"From: {email['from']}\n"
         f"Subject: {email['subject']}\n"
@@ -52,7 +52,7 @@ def analyze_email(email: dict) -> dict:
     try:
         result = json.loads(raw)
     except json.JSONDecodeError:
-        # Fallback if Claude returns something unexpected
+        # Fallback if the model returns something unexpected
         result = {
             "summary": "Could not parse summary.",
             "type": "unknown",

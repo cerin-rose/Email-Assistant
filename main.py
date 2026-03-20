@@ -3,8 +3,8 @@ main.py — Entry point for the Email Assistant.
 
 Pipeline:
   1. Read emails from data/sample_emails.json
-  2. Analyze each one (summarize + classify) using Claude
-  3. Draft a reply suggestion using Claude
+  2. Analyze each one (summarize + classify) using GPT-4o
+  3. Draft a reply suggestion using GPT-4o
   4. Save everything to emails.db
   5. Print a clean summary report to the terminal
 """

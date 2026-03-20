@@ -1,5 +1,5 @@
 """
-replier.py — Drafts a reply suggestion for each email using Claude.
+replier.py — Drafts a reply suggestion for each email using GPT-4o.
 
 The draft is a starting point — the user always reviews and edits
 before sending anything. Nothing is sent automatically.
@@ -24,7 +24,7 @@ Guidelines:
 
 
 def draft_reply(email: dict, analysis: dict) -> str:
-    """Ask Claude to draft a reply for this email."""
+    """Ask GPT-4o to draft a reply for this email."""
     email_text = (
         f"From: {email['from']}\n"
         f"Subject: {email['subject']}\n\n"
