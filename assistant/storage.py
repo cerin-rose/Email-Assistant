@@ -43,7 +43,7 @@ def save_email(email: dict, analysis: dict, draft: str):
         """,
         (
             email["id"],
-            email["from"],
+            email["sender"],
             email["subject"],
             email["date"],
             email["body"],
@@ -55,6 +55,16 @@ def save_email(email: dict, analysis: dict, draft: str):
     )
     conn.commit()
     conn.close()
+
+
+def is_already_processed(email_id: str) -> bool:
+    """Check if an email ID has already been processed."""
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("SELECT 1 FROM processed_emails WHERE id = ?", (email_id,))
+    result = cur.fetchone()
+    conn.close()
+    return result is not None
 
 
 def get_all_emails() -> list[dict]:

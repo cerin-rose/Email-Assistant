@@ -32,7 +32,7 @@ Return ONLY valid JSON. No extra text."""
 def analyze_email(email: dict) -> dict:
     """Send one email to GPT-4o and get back summary + classification."""
     email_text = (
-        f"From: {email['from']}\n"
+        f"From: {email['sender']}\n"
         f"Subject: {email['subject']}\n"
         f"Date: {email['date']}\n\n"
         f"{email['body']}"
@@ -48,6 +48,13 @@ def analyze_email(email: dict) -> dict:
     )
 
     raw = response.choices[0].message.content.strip()
+
+    # Strip markdown code blocks if GPT wraps the JSON in ```json ... ```
+    if raw.startswith("```"):
+        raw = raw.split("```")[1]
+        if raw.startswith("json"):
+            raw = raw[4:]
+        raw = raw.strip()
 
     try:
         result = json.loads(raw)

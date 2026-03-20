@@ -1,15 +1,16 @@
 # Email Assistant
 
-An AI-powered email assistant that reads your inbox, summarizes and prioritizes each email, and drafts a reply — all from the terminal.
+An AI-powered email assistant that reads your real Gmail inbox, summarizes and prioritizes each email, and drafts a reply — all from the terminal.
 
-Built with Python, OpenAI GPT-4o, and SQLite.
+Built with Python, Claude (Anthropic), Gmail API, and SQLite.
 
 ---
 
 ## What it does
 
-- Reads emails from a local JSON file
-- Uses GPT-4o to summarize each email, categorize it, and assign a priority (high / medium / low)
+- Connects to your real Gmail inbox via the Gmail API (OAuth 2.0)
+- Fetches only unread emails — never re-processes what it has already seen
+- Uses Claude to summarize each email, categorize it, and assign a priority (high / medium / low)
 - Drafts a professional reply suggestion for every email
 - Saves everything to a local SQLite database
 - Prints a clean, colour-coded terminal report sorted by priority
@@ -21,13 +22,18 @@ Built with Python, OpenAI GPT-4o, and SQLite.
 1. Clone the repo
 2. Install dependencies
    ```
-   pip install -r requirements.txt
+   py -3.12 -m pip install -r requirements.txt
    ```
-3. Copy `.env.example` to `.env` and add your OpenAI API key
+3. Copy `.env.example` to `.env` and add your Anthropic API key
    ```
-   OPENAI_API_KEY=your-key-here
+   ANTHROPIC_API_KEY=your-key-here
    ```
-4. Run
+4. Set up Gmail API credentials
+   - Go to [Google Cloud Console](https://console.cloud.google.com)
+   - Create a project, enable the Gmail API
+   - Create OAuth 2.0 credentials (Desktop app) and download as `credentials.json`
+   - Place `credentials.json` in the project root
+5. Run — browser will open once for Gmail login, then closes
    ```
    py -3.12 main.py
    ```
@@ -40,12 +46,15 @@ Built with Python, OpenAI GPT-4o, and SQLite.
 email-assistant/
 ├── main.py                  # Entry point
 ├── assistant/
-│   ├── reader.py            # Loads emails from JSON
-│   ├── analyzer.py          # Summarizes and classifies emails via GPT-4o
-│   ├── replier.py           # Drafts reply suggestions via GPT-4o
+│   ├── gmail_auth.py        # Gmail OAuth login and token management
+│   ├── reader.py            # Loads emails from Gmail (or JSON for testing)
+│   ├── analyzer.py          # Summarizes and classifies emails via Claude
+│   ├── replier.py           # Drafts reply suggestions via Claude
 │   └── storage.py           # Saves and retrieves emails from SQLite
 ├── data/
-│   └── sample_emails.json   # Sample inbox
+│   └── sample_emails.json   # Sample inbox (mock/testing mode)
+├── credentials.json         # Gmail OAuth credentials (never commit — add to .gitignore)
+├── token.json               # Auto-created after first login (never commit — add to .gitignore)
 ├── .env.example             # API key template
 └── requirements.txt
 ```
@@ -55,6 +64,11 @@ email-assistant/
 ## Tech stack
 
 - Python 3.12
-- OpenAI GPT-4o API
+- Anthropic Claude API (claude-opus-4-6)
+- Gmail API (google-auth, google-auth-oauthlib, google-api-python-client)
 - SQLite (built into Python)
 - python-dotenv
+
+---
+
+Built by Cerin

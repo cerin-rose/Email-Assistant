@@ -1,6 +1,22 @@
+# Secrets — never commit these
 .env
+credentials.json
+token.json
+
+# Database
 emails.db
+
+# Logs and generated files
+report.txt
+assistant.log
+
+# Personal/local scripts
+update_linkedin_excel.py
+
+# Python
 __pycache__/
 *.pyc
-.local-config/
+
+# Claude and local config
 .claude/
+.local-config/

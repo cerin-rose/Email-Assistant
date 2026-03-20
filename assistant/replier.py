@@ -26,7 +26,7 @@ Guidelines:
 def draft_reply(email: dict, analysis: dict) -> str:
     """Ask GPT-4o to draft a reply for this email."""
     email_text = (
-        f"From: {email['from']}\n"
+        f"From: {email['sender']}\n"
         f"Subject: {email['subject']}\n\n"
         f"{email['body']}"
     )
